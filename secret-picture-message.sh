@@ -45,4 +45,9 @@ echo "Embedding File"
 steghide embed -cf $image.jpg -ef /tmp/$txt.txt
 ##File Embedding
 
+##Removing File After Being Embedded
+shred -z -n 5 -u /tmp/$txt.txt
+##Removing File After Being Embedded
+
+
 fi
