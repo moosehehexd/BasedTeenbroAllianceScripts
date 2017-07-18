@@ -1,5 +1,15 @@
 #!/bin/bash
 
+##File Extraction
+echo "Are you extracting a message from an image? (y/n) "
+read extract
+if [ "$extract" == "y" ]; then
+echo "Image name:"
+read image
+steghide extract -sf $image.jpg
+##File Extraction
+
+else
 
 ##Text Editor
 echo "Which text editor will you be using? (vim, nano, ect...) "
@@ -17,15 +27,6 @@ read image
 echo "File name: "
 read txt
 ##File Name
-
-
-##File Extraction
-echo "Extract message from image? (y/n) "
-read extract
-if [ "$extract" == "y" ]; then
-steghide extract -sf $image.jpg
-else
-##File Extraction
 
 
 ##For Generating The Image
