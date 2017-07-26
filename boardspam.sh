@@ -1,4 +1,5 @@
 #Copyright (c) 2017 Based Teenbro inc. All rights reserved
+IPTXT="proxies.txt"			#Proxy list document ie IP.txt - one IP per line
 directory=$(pwd)
 
 echo "Name to use: (if you enter nothing, it will default to the boards anonymous name)"
@@ -23,19 +24,47 @@ echo "Whats the sites software based on? (lynxchan, vichan)"
 read software
 
 if [ "$software" == "lynxchan" ]; then
+
+
+IPN=$(wc -l < $IPTXT)
+arr_proxy=($(cat $IPTXT))
+
+if [ $IPN -gt 0 ]
+	then
+	function func_prox {
+			VAL="$(( A - $(( IPN * $(( A / $IPN )) )) ))"
+		    	export http_proxy="http://${arr_proxy[$VAL]}" 
+		   	export https_proxy="$http_proxy"
+	}
+
+	else
+	function func_prox {
+			echo "WARNING: NO PROXIES" & echo
+}
+fi
+	function post {
+	curl -X POST --form 'subject='$subject \
+			--form 'email='$email \
+			--form 'name='$name \
+			--form 'message='$rand_text \
+			--form 'boardUri='$uri \
+			--form 'files='@$rand_text.jpg \
+			--referer http://$site/$uri/ http://$site/newThread.js
+	}
+	function txt_img {
+			rand_text=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
+			mx=10;my=10;head -c "$((3*mx*my))" /dev/urandom | convert -depth 8 -size "${mx}x${my}" RGB:- $rand_text.jpg
+	}
+	function end {
+			rm $rand_text.jpg
+			date
+		}
 while true
 do
-	rand_text=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
-	mx=10;my=10;head -c "$((3*mx*my))" /dev/urandom | convert -depth 8 -size "${mx}x${my}" RGB:- $rand_text.jpg
-	curl -X POST --form 'subject='$subject \
-				 --form 'email='$email \
-				 --form 'name='$name \
-				 --form 'message='$rand_text \
-				 --form 'boardUri='$uri \
-				 --form 'files='@$rand_text.jpg \
-				 --referer http://$site/$uri/ http://$site/newThread.js
-	rm $rand_text.jpg
-	date
+	func_prox
+	txt_img
+	post
+	end
 	sleep $timeout
 done
 
@@ -46,7 +75,6 @@ if [ "$software" == "vichan" ]; then
 
 #Script Settings
 THREAD="threads.txt"			#List of thread numbers - one number per line
-IPTXT="proxies.txt"			#Proxy list document ie IP.txt - one IP per line
 #################
 
 A=0
