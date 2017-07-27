@@ -25,3 +25,5 @@ i　　　ｲ　 　| 　| |､_ ,､ ! .ﾊ　//　　　　　　　　　　/
 puts a message into a randomly generated picture
 
 requires image magick and steghide
+
+Edgy Greetz: Bui, GR:15 DEFENSE FORCE
