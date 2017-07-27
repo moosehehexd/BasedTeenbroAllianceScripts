@@ -27,3 +27,5 @@ puts a message into a randomly generated picture
 requires image magick and steghide
 
 Edgy Greetz: Bui, GR:15 DEFENSE FORCE
+
+Major props to a wonderful anon on /inta/. Your contibutions are greatly appreciated. Much love <3

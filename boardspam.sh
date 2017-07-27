@@ -91,10 +91,10 @@ read uri	#Board's URI, example: b, am, pol, ect...
 echo "Flood timeout: (in seconds)"
 read timeout	#How long you have to wait inbetween posts
 
-echo "Whats the sites software based on? (lynxchan, vichan)"
+echo "Whats the sites software based on? (1 = lynxchan, 2 = vichan)"
 read software	#Ask's what the the IB's software is based on, currently works with lynxchan, vichan, and their forks.
 
-if [ "$software" == "lynxchan" ]; then
+if [ "$software" == "1" ]; then
 
 while true	#Repeats
 do
@@ -106,7 +106,7 @@ done
 
 fi
 
-if [ "$software" == "vichan" ]; then
+if [ "$software" == "2" ]; then
 
 A=0
 RAND="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)"
