@@ -18,7 +18,7 @@ if [ $IPN -gt 0 ]
 
 	else
 	function proxy {	#Output if no proxies are in 'proxies.txt'
-			echo "WARNING: NO PROXIES" & echo
+			echo "no proxies... have fun getting banned retard." & echo
 }
 fi
 
