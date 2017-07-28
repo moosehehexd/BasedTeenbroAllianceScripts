@@ -1,4 +1,31 @@
 #Copyright (c) 2017 Based Teenbro inc. All rights reserved
+
+echo "Name to use: (if you enter nothing, it will default to the boards anonymous name)"
+read name	#Name used on your post
+
+echo "Email to use:"
+read email	#Email used on your post
+
+echo "Subject:"
+read subject	#Subject used on your post
+
+echo "Deletion pass:" #Used incase you want to delete your posts
+read pass
+
+echo "Domain:"
+read site	#Website's domain, used for URLs. IP addresses may also be used
+
+echo "Board URI:"
+read uri	#Board's URI, example: b, am, pol, ect...
+
+echo "Flood timeout: (in seconds)"
+read timeout	#How long you have to wait inbetween posts
+
+echo "Whats the sites software based on? (1 = lynxchan, 2 = vichan)"
+read software	#Ask's what the the IB's software is based on, currently works with lynxchan, vichan, and their forks.
+
+curl https://$site/$uri/catalog.html | grep -Eo "/$uri/res/.{0,5}.html" | cut -d / -f 4 | cut -d . -f 1 > threads.txt
+
 #Script Settings
 THREAD="threads.txt"			#List of thread numbers - one number per line
 IPTXT="proxies.txt"			#Proxy list document ie IP.txt - one IP per line
@@ -69,30 +96,6 @@ function vi_post {		#Posting on vichan and its forks
 			 --referer https://$site/$uri/  \
 		 https://$site/post.php
 }
-
-echo "Name to use: (if you enter nothing, it will default to the boards anonymous name)"
-read name	#Name used on your post
-
-echo "Email to use:"
-read email	#Email used on your post
-
-echo "Subject:"
-read subject	#Subject used on your post
-
-echo "Deletion pass:" #Used incase you want to delete your posts
-read pass
-
-echo "Domain:"
-read site	#Website's domain, used for URLs. IP addresses may also be used
-
-echo "Board URI:"
-read uri	#Board's URI, example: b, am, pol, ect...
-
-echo "Flood timeout: (in seconds)"
-read timeout	#How long you have to wait inbetween posts
-
-echo "Whats the sites software based on? (1 = lynxchan, 2 = vichan)"
-read software	#Ask's what the the IB's software is based on, currently works with lynxchan, vichan, and their forks.
 
 if [ "$software" == "1" ]; then
 
