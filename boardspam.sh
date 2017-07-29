@@ -29,6 +29,7 @@ curl https://$site/$uri/catalog.html | grep -Eo "/$uri/res/.{0,5}.html" | cut -d
 #Script Settings
 THREAD="threads.txt"			#List of thread numbers - one number per line
 IPTXT="proxies.txt"			#Proxy list document ie IP.txt - one IP per line
+USR_AGT="userAgents.txt"		#User agent list - one per line
 #################
 directory=$(pwd)			#Directory used
 
@@ -45,9 +46,27 @@ if [ $IPN -gt 0 ]
 
 	else
 	function proxy {	#Output if no proxies are in 'proxies.txt'
-			echo "no proxies... have fun getting banned retard." & echo
+			echo "no proxies... have fun getting banned" & echo
+}
+
+fi
+
+AGT=$(wc -l < $USR_AGT)
+arr_usr_agt=($(cat $USR_AGT))
+
+if [ $AGT -gt 0 ]
+	then
+	function user_agnent {	#Function used for user agent spoofing
+			USER_AGENT="$arr_usr_agt"
+			}
+
+	else
+	function user_agent {	#Output if there isnt any
+		echo "Error... no user agents inside userAgents.txt"
 }
 fi
+
+
 
 TN=$(wc -l < $THREAD)					
 arr_thread=($(cat $THREAD))
@@ -72,7 +91,7 @@ function txt_img {	#Random text and images
 		mx=10;my=10;head -c "$((3*mx*my))" /dev/urandom | convert -depth 8 -size "${mx}x${my}" RGB:- $rand_text.jpg
 }
 function lynx_post {		#Posting on lynxchan and its forks
-		curl --connect-timeout 15 -X POST -F 'subject='$subject -F 'email='$email -F 'name='$name -F 'password'=$pass -F 'message='$rand_text -F 'boardUri='$uri -F 'files='@$rand_text.jpg --referer http://$site/$uri/ http://$site/newThread.js
+		curl --connect-timeout 15 -X POST -F 'subject='$subject -F 'email='$email -F 'name='$name -F 'password'=$pass -F 'message='$rand_text -F 'boardUri='$uri -F 'files='@$rand_text.jpg --referer http://$site/$uri/ -A "$USER_AGENT" http://$site/newThread.js
 	rm $rand_text.jpg
 	date
 }
@@ -85,7 +104,7 @@ function vi_post {		#Posting on vichan and its forks
 			 --form "name=$name" \
 			 --form "email=$email" \
 			 --form "subject=$subject" \
-			 --form "body=$BODY" \
+			 --form "body=$RBODY" \
 			 --form "embed=" \
 			 --form "dx=" \
 			 --form "dy=" \
@@ -94,7 +113,7 @@ function vi_post {		#Posting on vichan and its forks
 			 --form "json_response=1"  \
 			 --form "post=New Reply"  \
 			 --referer https://$site/$uri/  \
-		 https://$site/post.php
+			 -A "$USER_AGENT" https://$site/post.php
 }
 
 if [ "$software" == "1" ]; then
